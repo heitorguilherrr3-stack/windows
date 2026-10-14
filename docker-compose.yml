@@ -4,7 +4,7 @@ services:
     container_name: meu-windows
     environment:
       VERSION: "10l"           # Windows 10 LTSC, a versão mais leve e rápida
-      RAM_SIZE: "8G"           # 8GB de RAM
+      RAM_SIZE: "16G"           # 8GB de RAM
       CPU_CORES: "4"           # 4 núcleos
       DISK_SIZE: "128G"        # Disco de 128GB
       LANGUAGE: "Portuguese"      # Idioma português[citation:9]
