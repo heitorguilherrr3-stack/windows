@@ -1,25 +1,33 @@
 services:
   windows:
     image: dockurr/windows
-    container_name: meu-windows
+    container_name: windows-boost
     environment:
-      VERSION: "10l"           # Windows 10 LTSC, a versão mais leve e rápida
-      RAM_SIZE: "16G"           # 8GB de RAM
-      CPU_CORES: "4"           # 4 núcleos
-      DISK_SIZE: "128G"        # Disco de 128GB
-      LANGUAGE: "Portuguese"      # Idioma português[citation:9]
-      USERNAME: "admin"        # Seu nome de usuário
-      PASSWORD: "brasil3"  # Sua senha (pelo menos 8 caracteres)
-      AUDIO: "Y"               # Habilita áudio
+      VERSION: "10l"              # Windows 10 LTSC - o mais leve
+      RAM_SIZE: "max"             # Pega toda RAM disponível
+      CPU_CORES: "max"            # Pega todos os núcleos disponíveis
+      DISK_SIZE: "max"            # Pega todo disco disponível
+      CPU_MODEL: "host"           # CPU nativa - boost de performance
+      GPU: "Y"                    # Ativa aceleração de GPU
+      RENDERNODE: /dev/dri/renderD128  # Render node padrão
+      LANGUAGE: "Portuguese"
+      REGION: "pt-BR"
+      KEYBOARD: "pt-BR"
+      USERNAME: "admin"
+      PASSWORD: "SuaSenha123"
+      AUDIO: "Y"
     devices:
-      - /dev/kvm               # Obrigatório! Sem isso o Windows não inicia
+      - /dev/kvm                  # OBRIGATÓRIO - sem isso é lento demais
+      - /dev/dri:/dev/dri         # GPU do host pro container
+      - /dev/net/tun
     cap_add:
       - NET_ADMIN
     ports:
-      - 8006:8006              # Visualização web (apenas para instalação)
-      - 3389:3389/tcp          # RDP (usar no dia a dia)
-      - 5900:5900/tcp          # VNC (reserva)
+      - 8006:8006                 # Visualizador web (só pra instalar)
+      - 3389:3389/tcp             # RDP (use isso no dia a dia)
+      - 3389:3389/udp             # RDP via UDP (mais rápido)
     volumes:
-      - ./windows:/storage     # Arquivos de disco persistentes
-      - ./shared:/shared       # Pasta compartilhada com o host
+      - ./windows:/storage
+      - ./shared:/shared
     restart: unless-stopped
+    stop_grace_period: 2m
