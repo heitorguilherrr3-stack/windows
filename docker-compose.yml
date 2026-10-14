@@ -1,0 +1,25 @@
+services:
+  windows:
+    image: dockurr/windows
+    container_name: meu-windows
+    environment:
+      VERSION: "10l"           # Windows 10 LTSC, a versão mais leve e rápida
+      RAM_SIZE: "8G"           # 8GB de RAM
+      CPU_CORES: "4"           # 4 núcleos
+      DISK_SIZE: "128G"        # Disco de 128GB
+      LANGUAGE: "Portuguese"      # Idioma português[citation:9]
+      USERNAME: "admin"        # Seu nome de usuário
+      PASSWORD: "brasil3"  # Sua senha (pelo menos 8 caracteres)
+      AUDIO: "Y"               # Habilita áudio
+    devices:
+      - /dev/kvm               # Obrigatório! Sem isso o Windows não inicia
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 8006:8006              # Visualização web (apenas para instalação)
+      - 3389:3389/tcp          # RDP (usar no dia a dia)
+      - 5900:5900/tcp          # VNC (reserva)
+    volumes:
+      - ./windows:/storage     # Arquivos de disco persistentes
+      - ./shared:/shared       # Pasta compartilhada com o host
+    restart: unless-stopped
