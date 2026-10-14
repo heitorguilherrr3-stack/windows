@@ -3,31 +3,32 @@ services:
     image: dockurr/windows
     container_name: windows-boost
     environment:
-      VERSION: "10l"              # Windows 10 LTSC - o mais leve
-      RAM_SIZE: "max"             # Pega toda RAM disponível
-      CPU_CORES: "max"            # Pega todos os núcleos disponíveis
-      DISK_SIZE: "max"            # Pega todo disco disponível
-      CPU_MODEL: "host"           # CPU nativa - boost de performance
-      GPU: "Y"                    # Ativa aceleração de GPU
-      RENDERNODE: /dev/dri/renderD128  # Render node padrão
+      VERSION: "10l"
+      RAM_SIZE: "8G"           # Fixo. Não use "max"
+      CPU_CORES: "4"           # Fixo. Deixe 1-2 núcleos pro host
+      DISK_SIZE: "128G"        # Disco é seguro, pode manter
+      CPU_MODEL: "host"
+      GPU: "Y"
+      RENDERNODE: /dev/dri/renderD128
       LANGUAGE: "Portuguese"
       REGION: "pt-BR"
       KEYBOARD: "pt-BR"
       USERNAME: "admin"
       PASSWORD: "SuaSenha123"
       AUDIO: "Y"
+      MANUAL: "N"              # Garante boot automático
     devices:
-      - /dev/kvm                  # OBRIGATÓRIO - sem isso é lento demais
-      - /dev/dri:/dev/dri         # GPU do host pro container
+      - /dev/kvm
+      - /dev/dri:/dev/dri
       - /dev/net/tun
     cap_add:
       - NET_ADMIN
     ports:
-      - 8006:8006                 # Visualizador web (só pra instalar)
-      - 3389:3389/tcp             # RDP (use isso no dia a dia)
-      - 3389:3389/udp             # RDP via UDP (mais rápido)
+      - 8006:8006
+      - 3389:3389/tcp
+      - 3389:3389/udp
     volumes:
       - ./windows:/storage
       - ./shared:/shared
-    restart: unless-stopped
+    restart: unless-stopped      # JÁ GARANTE QUE ELE SEMPRE VOLTA
     stop_grace_period: 2m
