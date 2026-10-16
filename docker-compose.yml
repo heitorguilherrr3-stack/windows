@@ -4,7 +4,7 @@ services:
     container_name: windows-boost
     environment:
       VERSION: "10l"
-      RAM_SIZE: "8G"           # Fixo. Não use "max"
+      RAM_SIZE: "16G"           # Fixo. Não use "max"
       CPU_CORES: "4"           # Fixo. Deixe 1-2 núcleos pro host
       DISK_SIZE: "128G"        # Disco é seguro, pode manter
       CPU_MODEL: "host"
